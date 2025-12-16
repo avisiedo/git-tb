@@ -1,0 +1,34 @@
+# Ignore by default
+**/*
+
+# Add root files
+!.gitignore
+!README.md
+!LICENSE
+!Makefile
+!poetry.lock
+!poetry-project.toml
+
+# Add source code
+!git_tb
+!git_tb/**
+!git_tb/**/*
+
+# Add docs
+!docs
+!docs/**
+!docs/**/*
+
+# Add scripts
+!scripts
+!scripts/**
+!scripts/**/*
+
+
+# Add tests
+!tests
+!tests/**
+!tests/**/*
+
+# Ignore __pycache__
+**/__pycache__
