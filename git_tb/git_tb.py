@@ -51,6 +51,7 @@ class _:
     SUBCMD_PUSH = "push"
     SUBCMD_BACKUP = "backup"
     SUBCMD_RESTORE = "restore"
+    SUBCMD_INTEGRATE = "integrate"
 
     # git commands
     GIT_CMD_REMOTE = "remote"
@@ -587,6 +588,10 @@ def git_tb_restore():
         except Exception as e:
             logging.error(e)
 
+def git_tb_integrate():
+    """Kind of a backup, but making some housekeeping."""
+    raise NotImplementedError
+
 
 def git_tb_args():
     """Configure argument parser and return it."""
@@ -653,6 +658,11 @@ def git_tb_args():
         _.SUBCMD_RESTORE,
         help="Restore from a '" + _.WORKSPACE_FILE + "' file all the repositories",
     )
+    # pylint: disable=W0612
+    restore_parser = subparsers.add_parser(
+        _.SUBCMD_INTEGRATE,
+        help="Integrate new or repository changes in the workspace definition",
+    )
 
     return parser
 
@@ -677,6 +687,7 @@ def get_subcommands_map():
         _.SUBCMD_PUSH: git_tb_push,
         _.SUBCMD_BACKUP: git_tb_backup,
         _.SUBCMD_RESTORE: git_tb_restore,
+        _.SUBCMD_INTEGRATE: git_tb_integrate,
     }
 
 
