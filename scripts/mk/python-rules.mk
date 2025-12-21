@@ -10,6 +10,10 @@ deps: .venv  ## Install dependencies in a python virtual environment
 	source .venv/bin/activate; pip install poetry
 	source .venv/bin/activate; python3 -m poetry install
 
+.PHONY: install
+install:
+	install --mode=0740 git_tb/git_tb.py "$(HOME)/.local/bin/git-tb"
+
 .venv:
 	python3 -m venv .venv
 
