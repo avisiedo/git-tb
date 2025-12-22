@@ -71,6 +71,7 @@ class _:
     FILTERS = (FILTER_NODE_MODULES, FILTER_VENV)
 
     SUBP_CAPTURE_OUTPUT = "capture_output"
+    SUBP_CHECK = "check"
 
     CHECK_MODIFIED = "modified"
     CHECK_ADDED = "added"
@@ -90,8 +91,10 @@ def git(*args, **kargs):
         raise KeyError(f"'{_.KEY_CWD}'")
     if _.SUBP_CAPTURE_OUTPUT not in kargs:
         kargs[_.SUBP_CAPTURE_OUTPUT] = True
+    if _.SUBP_CHECK not in kargs:
+        kargs[_.SUBP_CHECK] = True
     _cmd = [_.GIT, *args]
-    result = subprocess.run(_cmd, **kargs, check=True)
+    result = subprocess.run(_cmd, **kargs)
     return result
 
 
@@ -546,11 +549,10 @@ def git_tb_restore_helper(name, path, repo):
                     value,
                     target_path,
                     cwd=parent_target_path,
-                    check=True,
                 )
             else:
                 git(_.GIT_CMD_REMOTE, "add", key, value, cwd=target_path, check=False)
-        git(_.GIT_CMD_FETCH, "--all", cwd=target_path, check=True)
+        git(_.GIT_CMD_FETCH, "--all", cwd=target_path)
 
 
 def git_tb_restore():

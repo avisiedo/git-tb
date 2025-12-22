@@ -3,8 +3,9 @@
 
 # Unit tests for git-tb tool
 from unittest.mock import Mock, patch
-from git_tb import *
 
+from git_tb.git_tb import *
+from git_tb.git_tb import _
 
 def test_git_raise_key_error():
     try:
@@ -25,9 +26,11 @@ def test_git_default_capture_output():
 
         # Verifica que el comportamiento esperado se haya invocado
         mock_subprocess_run.assert_called_once_with(
-            ["git", "version"], capture_output=True, cwd="."
+            ["git", "version"], capture_output=True, cwd=".", check=True
         )
-        mock_subprocess_run.assert_called_once_with(["version"], cwd=".")
+        mock_subprocess_run.assert_called_once_with(
+            ["git", "version"], cwd=".", capture_output=True, check=True
+        )
 
         # Verifica que la función devuelva el resultado esperado
         assert result.returncode == 0
@@ -42,7 +45,7 @@ def test_git_raise_key_error():
     with patch("subprocess.run", mock_subprocess_run):
         result = git("version", cwd=".", capture_output=True)
         mock_subprocess_run.assert_called_once_with(
-            ["git", "version"], capture_output=True, cwd="."
+            ["git", "version"], capture_output=True, cwd=".", check=True
         )
         assert result.returncode == 0
 
@@ -56,7 +59,7 @@ def test_git_capture_output_false():
     with patch("subprocess.run", mock_subprocess_run):
         result = git("status", cwd=".", capture_output=False)
         mock_subprocess_run.assert_called_once_with(
-            ["git", "status"], capture_output=False, cwd="."
+            ["git", "status"], capture_output=False, cwd=".", check=True
         )
         assert result.returncode == 0
 
@@ -69,4 +72,6 @@ def test_git_tb_all():
 
 
 def test_git_tb_list_helper():
+    args = []
+    kargs = {_.KEY_CWD: "."}
     git_tb_list_helper(*args, **kargs)
