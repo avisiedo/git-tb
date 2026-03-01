@@ -92,7 +92,7 @@ def git(*args, **kargs):
     if _.SUBP_CAPTURE_OUTPUT not in kargs:
         kargs[_.SUBP_CAPTURE_OUTPUT] = True
     if _.SUBP_CHECK not in kargs:
-        kargs[_.SUBP_CHECK] = True
+        kargs[_.SUBP_CHECK] = False
     _cmd = [_.GIT, *args]
     # pylint: disable=subprocess-run-check
     result = subprocess.run(_cmd, **kargs)
