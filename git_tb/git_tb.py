@@ -57,7 +57,6 @@ class _:
     GIT_CMD_PUSH = "push"
     GIT_CMD_PULL = "pull"
     GIT_CMD_CLONE = "clone"
-    GIT_CMD_REMOTE = "remote"
     GIT_CMD_STATUS = "status"
     GIT_CMD_BRANCH = "branch"
     GIT_CMD_REV_PARSE = "rev-parse"
