@@ -222,7 +222,7 @@ def git_tb_check_proc_general(summary: dict, cwd: str):
     return summary
 
 
-def git_read_local_branches(cwd: str) -> list:
+def git_read_local_branches(cwd: str) -> list | None:
     """Read the list of local branches and return as a list of strings.
 
     :param cwd: The path for the analyzed repository.
@@ -247,7 +247,7 @@ def git_read_local_branches(cwd: str) -> list:
         return None
 
 
-def git_read_remote_branches(cwd: str, remotes: list) -> list:
+def git_read_remote_branches(cwd: str, remotes: list) -> list | None:
     """Read all the remote branches for all the remotes.
 
     :param cwd: The current work directory for the working repository.
