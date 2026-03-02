@@ -316,7 +316,7 @@ def git_tb_check_proc_remotes(summary: dict, cwd: str):
                 was_found = True
                 break
 
-        if not _ARGS.is_checking_remote:
+        if _ARGS and not _ARGS.is_checking_remote:
             continue
 
         if not was_found:
