@@ -198,6 +198,7 @@ def git_tb_check_proc_general(summary: dict, cwd: str):
         "--porcelain",
         cwd=cwd,
         capture_output=True,
+        check=False
     )
     output = result.stdout.decode(_.UTF_8)
     if output == "":
