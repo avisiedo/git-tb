@@ -395,8 +395,8 @@ def get_priority_git_remotes():
 def git_tb_push_helper(*args, **kargs):
     """Helper to traverse repositories and push to the remotes to sync the
     current"""
+    cwd = kargs[_.KEY_CWD]
     try:
-        cwd = kargs[_.KEY_CWD]
         remotes = git_remote_list(cwd)
         for remote in get_priority_git_remotes():
             if remote in remotes:
