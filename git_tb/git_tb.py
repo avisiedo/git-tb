@@ -84,18 +84,22 @@ class _:
     ERR_NOT_IMPLEMENTED = "Not Implemented"
 
 
-def git(*args, **kargs):
+
+def git(*args, **kargs): # type: ignore
     """Wrapper to invoke git commands"""
+    # Check required keys
     if _.KEY_CWD not in kargs:
         raise KeyError(f"'{_.KEY_CWD}'")
+    # Set default key values for optionals
     if _.SUBP_CAPTURE_OUTPUT not in kargs:
         kargs[_.SUBP_CAPTURE_OUTPUT] = True
     if _.SUBP_CHECK not in kargs:
-        kargs[_.SUBP_CHECK] = False
-    _cmd = [_.GIT, *args]
+        kargs[_.SUBP_CHECK] = True
+    # Compose final command and execute it
+    _cmd = [_.GIT, *args] # type: ignore
     # pylint: disable=subprocess-run-check
-    result = subprocess.run(_cmd, **kargs)
-    return result
+    result = subprocess.run(_cmd, **kargs) # type: ignore
+    return result # type: ignore
 
 
 def git_tb_all(basedir, f, *args, **kargs):
