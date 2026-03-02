@@ -102,7 +102,7 @@ def git(*args, **kargs): # type: ignore
     return result # type: ignore
 
 
-def git_tb_all(basedir, f, *args, **kargs):
+def git_tb_all(basedir: str, f, *args, **kargs) -> None:
     """Traverse file system to find git repositories starting at the specific
     directory, and for each repository detected, run the function with the
     passing the arguments. It does not find submodules, it stop depth searching
