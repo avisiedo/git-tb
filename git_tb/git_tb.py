@@ -235,6 +235,7 @@ def git_read_local_branches(cwd: str) -> list | None:
             "--no-color",
             "--format=%(refname:short)",
             cwd=cwd,
+            check=False
         ).stdout.decode(_.UTF_8)
         if not result:
             return []
@@ -262,6 +263,7 @@ def git_read_remote_branches(cwd: str, remotes: list) -> list | None:
             "--no-color",
             "--format=%(refname:short)",
             "--remotes",
+            check=False
             cwd=cwd,
         ).stdout.decode(_.UTF_8)
         if not result:
@@ -329,11 +331,16 @@ def git_tb_check_proc_remotes(summary: dict, cwd: str):
         for remote in remotes:
             if list(remote.keys())[0] + "/" + branch in remote_branches:
                 remote_branch = list(remote.keys())[0] + "/" + branch
-            local_hash = git(_.GIT_CMD_REV_PARSE, branch, cwd=cwd).stdout.decode(
+            local_hash = git(
+                _.GIT_CMD_REV_PARSE,
+                branch,
+                check=False,
+                cwd=cwd
+            ).stdout.decode(
                 _.UTF_8
             )
             remote_hash = git(
-                _.GIT_CMD_REV_PARSE, remote_branch, cwd=cwd
+                _.GIT_CMD_REV_PARSE, remote_branch, check=False, cwd=cwd
             ).stdout.decode(_.UTF_8)
             if local_hash == remote_hash:
                 has_sync_commit = True
@@ -375,6 +382,7 @@ def git_tb_pull_helper(*args, **kargs):
     :param **kargs: no positional arguments. It is used the current working dir
     which represent where the repository is located in the file system."""
     logging.info('repository at: "%s"', kargs[_.KEY_CWD])
+    kargs["check"] = False
     git(_.GIT_CMD_PULL, *args, **kargs)
 
 
@@ -400,7 +408,7 @@ def git_tb_push_helper(*args, **kargs):
         remotes = git_remote_list(cwd)
         for remote in get_priority_git_remotes():
             if remote in remotes:
-                git(_.GIT_CMD_PUSH, remote, "--all", cwd=cwd)
+                git(_.GIT_CMD_PUSH, remote, "--all", check=False, cwd=cwd)
                 return
         logging.warning("%s: repository not pushed", cwd)
     # pylint: disable=W0718
@@ -421,7 +429,7 @@ def git_remote_list(path):
 
     :param path: The relative location of the git repository using WORKSPACE as
     the base repository."""
-    return git(_.GIT_CMD_REMOTE, cwd=path).stdout.decode(_.UTF_8).splitlines()
+    return git(_.GIT_CMD_REMOTE, check=False, cwd=path).stdout.decode(_.UTF_8).splitlines()
 
 
 def git_read_remotes(path: str) -> list:
@@ -436,7 +444,7 @@ def git_read_remotes(path: str) -> list:
         data = []
         for key in git_remote_list(path):
             url = (
-                git(_.GIT_CMD_REMOTE, "get-url", key, cwd=path)
+                git(_.GIT_CMD_REMOTE, "get-url", key, check=False, cwd=path)
                 .stdout.decode(_.UTF_8)
                 .split()[0]
             )
@@ -509,7 +517,7 @@ def git_tb_backup():
         yaml.safe_dump(data, fo)
 
 
-def is_invalid_repo_path(path: str) -> bool:
+def is_invalid_repo_path(path: str | None) -> bool:
     """Check when a path is an invalid repository path. It evaluates that it
     is not an absolute path (it is relative to WORKSPACE variable). If the path
     is None or an empty string. If the path try to go up directory, at the
@@ -553,11 +561,12 @@ def git_tb_restore_helper(name, path, repo):
                     key,
                     value,
                     target_path,
+                    check=False,
                     cwd=parent_target_path,
                 )
             else:
-                git(_.GIT_CMD_REMOTE, "add", key, value, cwd=target_path, check=False)
-        git(_.GIT_CMD_FETCH, "--all", cwd=target_path)
+                git(_.GIT_CMD_REMOTE, "add", key, value, check=False, cwd=target_path, check=False)
+        git(_.GIT_CMD_FETCH, "--all", check=False, cwd=target_path)
 
 
 def git_tb_restore():
