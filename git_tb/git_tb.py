@@ -263,7 +263,7 @@ def git_read_remote_branches(cwd: str, remotes: list) -> list | None:
             "--no-color",
             "--format=%(refname:short)",
             "--remotes",
-            check=False
+            check=False,
             cwd=cwd,
         ).stdout.decode(_.UTF_8)
         if not result:
@@ -565,7 +565,7 @@ def git_tb_restore_helper(name, path, repo):
                     cwd=parent_target_path,
                 )
             else:
-                git(_.GIT_CMD_REMOTE, "add", key, value, check=False, cwd=target_path, check=False)
+                git(_.GIT_CMD_REMOTE, "add", key, value, check=False, cwd=target_path)
         git(_.GIT_CMD_FETCH, "--all", check=False, cwd=target_path)
 
 
