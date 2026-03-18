@@ -13,7 +13,7 @@ deps: .venv  ## Install dependencies in a python virtual environment
 .PHONY: install
 install:
 	[ -e "$(HOME)/.local/bin/git-tb" ] || mkdir -p "$(HOME)/.local/bin"
-	install --mode=0740 git_tb/git_tb.py "$(HOME)/.local/bin/git-tb"
+	cp git_tb/git_tb.py "$(HOME)/.local/bin/git-tb" && chmod 0740 "$(HOME)/.local/bin/git-tb"
 
 .venv:
 	python3 -m venv .venv
