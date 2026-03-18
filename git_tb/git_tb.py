@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 
 """Provide git toolbox helper functions to manage git repositories at
